@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import Button from '../UI/Button';
 
 const EditTeacher = () => {
 	const { teacherId } = useParams();
@@ -14,7 +15,6 @@ const EditTeacher = () => {
 	});
 
 	useEffect(() => {
-		// Simulate fetching teacher data based on teacherId
 		if (teacherId === 't1') {
 			setTeacherDetails({
 				name: 'Dr. Smith',
@@ -35,12 +35,10 @@ const EditTeacher = () => {
 			teacherId,
 		);
 	}, [teacherId]);
+
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-		setTeacherDetails((prevDetails) => ({
-			...prevDetails,
-			[name]: value,
-		}));
+		setTeacherDetails((prev) => ({ ...prev, [name]: value }));
 	};
 
 	const handleSubmit = (e) => {
@@ -59,93 +57,52 @@ const EditTeacher = () => {
 	};
 
 	return (
-		<div className="p-6 bg-gray-100 min-h-screen">
-			<div className="container mx-auto">
-				<h2 className="text-2xl font-semibold mb-4">Edit Teacher</h2>
-				<form
-					onSubmit={handleSubmit}
-					className="space-y-4 bg-white p-6 rounded shadow-md"
-				>
-					<div>
-						<label
-							htmlFor="name"
-							className="block text-gray-700 text-sm font-bold mb-2"
+		<div
+			className="flex justify-center items-center min-h-screen bg-cover bg-center"
+			style={{
+				backgroundImage:
+					'url(https://static.vecteezy.com/system/resources/previews/034/052/820/non_2x/interior-of-a-classroom-with-natural-light-ai-generated-photo.jpg)',
+			}}
+		>
+			<div className="max-w-2xl w-full bg-white p-8 rounded-xl shadow-lg">
+				<h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
+					Edit Teacher
+				</h2>
+				<form onSubmit={handleSubmit} className="space-y-5">
+					{['name', 'department', 'subject', 'email'].map((field) => (
+						<div key={field}>
+							<label
+								htmlFor={field}
+								className="block text-sm font-medium text-gray-700 capitalize"
+							>
+								{field}
+							</label>
+							<input
+								type={field === 'email' ? 'email' : 'text'}
+								id={field}
+								name={field}
+								value={teacherDetails[field]}
+								onChange={handleChange}
+								required
+								className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm"
+							/>
+						</div>
+					))}
+					<div className="flex justify-between pt-4 space-x-3">
+						<Button
+							type="button"
+							onClick={() => navigate('/admin/dashboard')}
+							className="w-1/4 bg-transparent !text-gray-800 font-bold py-3 px-6 rounded-full focus:outline-none focus:shadow-outline transition duration-500 ease-in-out hover:bg-transparent hover:underline hover:!text-blue-400 "
 						>
-							Name
-						</label>
-						<input
-							type="text"
-							id="name"
-							name="name"
-							className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-							value={teacherDetails.name}
-							onChange={handleChange}
-							required
-						/>
-					</div>
-					<div>
-						<label
-							htmlFor="department"
-							className="block text-gray-700 text-sm font-bold mb-2"
+							Cancel
+						</Button>
+						<Button
+							type="submit"
+							className="w-1/2 bg-green-700 hover:bg-green-900 text-white font-bold py-3 px-6 rounded-full focus:outline-none focus:shadow-outline transition duration-300 ease-in-out  "
 						>
-							Department
-						</label>
-						<input
-							type="text"
-							id="department"
-							name="department"
-							className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-							value={teacherDetails.department}
-							onChange={handleChange}
-							required
-						/>
+							Update
+						</Button>
 					</div>
-					<div>
-						<label
-							htmlFor="subject"
-							className="block text-gray-700 text-sm font-bold mb-2"
-						>
-							Subject
-						</label>
-						<input
-							type="text"
-							id="subject"
-							name="subject"
-							className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-							value={teacherDetails.subject}
-							onChange={handleChange}
-							required
-						/>
-					</div>
-					<div>
-						<label
-							htmlFor="email"
-							className="block text-gray-700 text-sm font-bold mb-2"
-						>
-							Email
-						</label>
-						<input
-							type="email"
-							id="email"
-							name="email"
-							className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-							value={teacherDetails.email}
-							onChange={handleChange}
-							required
-						/>
-					</div>
-					<button
-						type="submit"
-						className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-					>
-						Update Teacher
-					</button>
-					<button
-						onClick={() => navigate('/admin/dashboard')}
-						className="ml-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-					>
-						Back to Dashboard
-					</button>
 				</form>
 			</div>
 		</div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import Button from './components/UI/Button';
 
 const Home = () => {
 	const navigate = useNavigate();
@@ -15,18 +16,18 @@ const Home = () => {
 					Join our community today!
 				</p>
 				<div className="flex justify-center space-x-4">
-					<button
+					<Button
 						onClick={() => navigate('/login')}
-						className="bg-white text-purple-600 font-semibold py-3 px-8 rounded-full hover:bg-purple-100 transition-colors duration-300 shadow-lg"
+						className="!bg-white !text-purple-600 font-semibold py-3 px-8 rounded-full hover:!bg-purple-100 transition-colors duration-300 shadow-lg"
 					>
 						Login
-					</button>
-					<button
+					</Button>
+					<Button
 						onClick={() => navigate('/register')}
-						className="bg-pink-500 text-white font-semibold py-3 px-8 rounded-full hover:bg-pink-600 transition-colors duration-300 shadow-lg"
+						className="!bg-pink-600 !text-white font-semibold py-3 px-8 rounded-full hover:!bg-pink-700 transition-colors duration-300 shadow-lg"
 					>
 						Register
-					</button>
+					</Button>
 				</div>
 				<div className="mt-12">
 					<p className="text-sm text-white/80">

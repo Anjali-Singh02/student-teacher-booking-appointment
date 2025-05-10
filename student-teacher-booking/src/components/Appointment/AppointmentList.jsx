@@ -1,105 +1,92 @@
-import React, { useState, useEffect } from 'react';
-import AppointmentCard from './AppointmentCard';
+import React, { useEffect, useState } from 'react';
+import { useAuth } from '../../hooks/useAuth';
+import AppointmentCard from './AppointmentCard'; // Import AppointmentCard
+import Button from '../UI/Button';
+import { BsArrowLeftCircle } from 'react-icons/bs';
+import { useNavigate } from 'react-router-dom'; // Import useParams
 
 const AppointmentList = ({ userRole }) => {
-	const [appointments, setAppointments] = useState([]);
+	const { appointments, currentUser, cancelAppointment } = useAuth(); // Get cancelAppointment
+	const [filteredAppointments, setFilteredAppointments] = useState([]);
+	const navigate = useNavigate();
 
 	useEffect(() => {
-		// Simulate fetching appointments from Firebase
-		const mockAppointments = [
-			{
-				id: 'a1',
-				studentName: 'Student A',
-				teacherName: 'Dr. Smith',
-				date: '2025-05-10',
-				time: '10:00',
-				reason: 'Project discussion',
-				status: 'pending',
-			},
-			{
-				id: 'a2',
-				studentName: 'Student B',
-				teacherName: 'Prof. Jones',
-				date: '2025-05-12',
-				time: '14:30',
-				reason: 'Assignment help',
-				status: 'approved',
-			},
-			{
-				id: 'a3',
-				studentName: 'Student A',
-				teacherName: 'Ms. Brown',
-				date: '2025-05-15',
-				time: '11:00',
-				reason: 'Lab doubts',
-				status: 'cancelled',
-			},
-			{
-				id: 'a4',
-				studentName: 'Student C',
-				teacherName: 'Dr. Smith',
-				date: '2025-05-18',
-				time: '16:00',
-				reason: 'Exam preparation',
-				status: 'pending',
-			},
-		];
-		setAppointments(mockAppointments);
-		console.log(
-			'APPOINTMENT_LIST (' +
-				userRole +
-				'): Fetched appointments (simulated)',
-		);
-	}, [userRole]);
+		console.log('APPOINTMENT_LIST: All appointments:', appointments); // Add this
+		if (userRole === 'student') {
+			const studentAppointments = appointments.filter(
+				(appointment) =>
+					appointment.studentEmail === currentUser?.email,
+			);
+			setFilteredAppointments(studentAppointments);
+			console.log(
+				'APPOINTMENT_LIST: Student appointments:',
+				studentAppointments,
+			); // Add this
+		} else if (userRole === 'teacher') {
+			const teacherAppointments = appointments.filter(
+				(appointment) =>
+					appointment.teacherEmail === currentUser?.email,
+			);
+			setFilteredAppointments(teacherAppointments);
+			console.log(
+				'APPOINTMENT_LIST: Teacher appointments:',
+				teacherAppointments,
+			); // Add this
+		} else {
+			setFilteredAppointments(appointments);
+			console.log(
+				'APPOINTMENT_LIST: All appointments (admin):',
+				appointments,
+			); //add this
+		}
+	}, [appointments, userRole, currentUser?.email]);
 
-	const handleApprove = (appointmentId) => {
-		console.log('APPOINTMENT_LIST: Approved appointment', appointmentId);
-		setAppointments((prevAppointments) =>
-			prevAppointments.map((appt) =>
-				appt.id === appointmentId
-					? { ...appt, status: 'approved' }
-					: appt,
-			),
-		);
+	const handleBack = () => {
+		if (userRole === 'student') {
+			navigate('/student/dashboard');
+		} else if (userRole === 'teacher') {
+			navigate('/teacher/dashboard');
+		} else if (userRole === 'admin') {
+			navigate('/admin/dashboard');
+		} else {
+			navigate('/');
+		}
 	};
-
-	const handleReject = (appointmentId) => {
-		console.log('APPOINTMENT_LIST: Rejected appointment', appointmentId);
-		setAppointments((prevAppointments) =>
-			prevAppointments.map((appt) =>
-				appt.id === appointmentId
-					? { ...appt, status: 'rejected' }
-					: appt,
-			),
-		);
-	};
-
 	const handleCancel = (appointmentId) => {
-		console.log('APPOINTMENT_LIST: Cancelled appointment', appointmentId);
-		setAppointments((prevAppointments) =>
-			prevAppointments.map((appt) =>
-				appt.id === appointmentId
-					? { ...appt, status: 'cancelled' }
-					: appt,
-			),
-		);
+		cancelAppointment(appointmentId);
 	};
 
 	return (
-		<div className="p-6 bg-gray-100 min-h-screen">
-			<div className="container mx-auto">
+		<div
+			className="flex justify-center min-h-screen bg-cover bg-center"
+			style={{
+				backgroundImage:
+					'url(https://i.pinimg.com/originals/f9/5f/ac/f95facb59d05714ee4fa16cf449083a3.jpg)',
+			}}
+		>
+			<div className="container mx-auto bg-white/50 backdrop-blur-md p-8 rounded-xl shadow-lg w-full my-5">
 				<h2 className="text-2xl font-semibold mb-4">My Appointments</h2>
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-					{appointments.map((appointment) => (
-						<AppointmentCard
-							key={appointment.id}
-							appointment={appointment}
-							userRole={userRole}
-							onApprove={handleApprove}
-							onReject={handleReject}
-							onCancel={handleCancel}
-						/>
-					))}
+				<Button
+					onClick={handleBack}
+					className=" rounded-full w-[40px] h-[40px] text-center bg-transparent hover:!bg-transparent"
+				>
+					<BsArrowLeftCircle className="text-[25px] text-gray-700" />
+				</Button>
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 ">
+					{filteredAppointments.length > 0 ? (
+						filteredAppointments.map((appointment) => (
+							<AppointmentCard
+								key={appointment.id}
+								appointment={appointment}
+								userRole={userRole}
+								onCancel={handleCancel} // Pass handleCancel
+							/>
+						))
+					) : (
+						<div className="text-gray-800 text-center">
+							No appointments found.
+						</div>
+					)}
 				</div>
 			</div>
 		</div>

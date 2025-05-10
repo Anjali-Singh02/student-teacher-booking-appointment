@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import Button from '../UI/Button';
 
 const TeacherDashboard = () => {
 	const { currentUser, logout } = useAuth();
@@ -12,8 +13,14 @@ const TeacherDashboard = () => {
 	};
 
 	return (
-		<div className="p-6 bg-gray-100 min-h-screen">
-			<div className="container mx-auto">
+		<div
+			className="flex justify-center  min-h-screen bg-cover bg-center"
+			style={{
+				backgroundImage:
+					'url(https://static.vecteezy.com/system/resources/previews/034/052/820/non_2x/interior-of-a-classroom-with-natural-light-ai-generated-photo.jpg)',
+			}}
+		>
+			<div className="container mx-auto bg-white/20 backdrop-blur-md p-8 rounded-xl shadow-lg w-full my-5">
 				<h2 className="text-2xl font-semibold mb-4">
 					Teacher Dashboard
 				</h2>
@@ -53,12 +60,12 @@ const TeacherDashboard = () => {
 						</p>
 					</Link>
 				</div>
-				<button
+				<Button
 					onClick={handleLogout}
 					className="mt-6 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
 				>
 					Logout
-				</button>
+				</Button>
 			</div>
 		</div>
 	);

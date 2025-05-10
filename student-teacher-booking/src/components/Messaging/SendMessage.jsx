@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import Button from '../UI/Button';
 
 const SendMessage = () => {
 	const { teacherId, studentId } = useParams();
@@ -43,8 +44,14 @@ const SendMessage = () => {
 	};
 
 	return (
-		<div className="p-6 bg-gray-100 min-h-screen">
-			<div className="container mx-auto">
+		<div
+			className="flex justify-center  min-h-screen bg-cover bg-center"
+			style={{
+				backgroundImage:
+					'url(https://static.vecteezy.com/system/resources/previews/034/052/820/non_2x/interior-of-a-classroom-with-natural-light-ai-generated-photo.jpg)',
+			}}
+		>
+			<div className="container mx-auto bg-white/20 backdrop-blur-md p-8 rounded-xl shadow-lg w-full my-5">
 				<h2 className="text-2xl font-semibold mb-4">
 					Send Message to {recipientName}
 				</h2>
@@ -69,12 +76,12 @@ const SendMessage = () => {
 							required
 						></textarea>
 					</div>
-					<button
+					<Button
 						type="submit"
-						className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+						className="bg-green-700 hover:bg-green-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
 					>
 						Send Message
-					</button>
+					</Button>
 					<button
 						onClick={() => navigate(-1)}
 						className="ml-2 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

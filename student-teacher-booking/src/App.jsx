@@ -169,7 +169,7 @@ const App = () => {
 							}
 						/>
 						<Route
-							path="/admin/edit-teacher/:teacherId"
+							path="/admin/edit-teacher"
 							element={
 								<PrivateRoute roles={['admin']}>
 									<EditTeacher />
