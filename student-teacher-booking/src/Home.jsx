@@ -29,12 +29,7 @@ const Home = () => {
 						Register
 					</Button>
 				</div>
-				<div className="mt-12">
-					<p className="text-sm text-white/80">
-						&copy; {new Date().getFullYear()} Our Platform. All
-						rights reserved.
-					</p>
-				</div>
+				
 			</div>
 		</div>
 	);
